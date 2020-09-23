@@ -1,0 +1,6 @@
+Pillow==2.2.1
+celery==4.4.6
+flower==0.9.5
+djangorestframework==3.11.0
+django-inline-svg
+django-widget-tweaks

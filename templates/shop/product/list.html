@@ -7,38 +7,98 @@
 
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-3">
-            <h3>Categories</h3>
-            <ul class="nav nav-pills nav-stacked">
-                <li {% if not category %}class="active"{% endif %}>
-                    <a href="{% url "shop:product_list" %}">All</a></li>
-                {% for c in categories %}
-                    <li {% if category.slug == c.slug %}class="active"{% endif %}>
-                        <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
 
-        <div class="col-md-9">
-            <h2>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="catalog-sidebar">
+            <div class="col">
+                <h3>Categories</h3>
+                <ul class="list-group list-group-flush">
+                    <li {% if not category %}class="list-group-item-active"{% endif %}>
+                        <a href="{% url "shop:product_list" %}">All</a></li>
+                    {% for c in categories %}
+                        <li {% if category.slug == c.slug %} class="list-group-item-active"{% endif %}>
+                            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="col-lg-12">
+                <div class="section-title text-center">
+                    <h2>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h2>
+                </div>
+                <div class="content-sorted">
+                    <div class="sort-container">
+                        <div class="product-count">{{ count_products }} товара</div>
+                        {% with sort_list=request.GET.sort_list %}
+                            <ul class="sort-list">
+                                <li><a href="#">Сначада</a></li>
+                                <li><a href="{% url "shop:product_list" %}?sort_list=-created">Новые</a></li>
+                                <li><a href="{% url "shop:product_list" %}?sort_list=-price">Дорогие</a></li>
+                                <li><a href="{% url "shop:product_list" %}?sort_list=price">Дешевые</a></li>
+                            </ul>
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 {% for product in products %}
-                    <div class="col-md-4">
-                        <div class="thumbnail">
-                            <a href="{{ product.get_absolute_url }}">
-                                <img src="{% if product.image %}{{ product.image.url }}
-                                          {% else %}{% static "img/123.png" %} {% endif %}">
-                            </a>
-                            <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
-                            ${{ product.price }}
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="product-item">
+                            <figure>
+                                <div class="product-item-content">
+                                    <div class="img-wrapper">
+                                        <div>
+                                            <a href="{{ product.get_absolute_url }}">
+                                                <img class="rounded" src="{% if product.image %}{{ product.image.url }}
+                                                          {% else %}{% static "img/No_image_available.svg" %} {% endif %}">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="product-info-wrap">
+                                            <div class="product-info">
+                                                <div class="product-names">
+                                                    <h6 href="{{ product.get_absolute_url }}" {{ product.name }}>{{ product.name }}</h6>
+                                                </div>
+                                                <div class="price">
+                                                    <p>${{ product.price }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </figure>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
-
-
     </div>
+
+{% if products.has_other_pages %}
+{% with sort_list=request.GET.sort_list %}
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li>
+                <a class="page-link" href="{% url "shop:product_list" %}?page=1&amp;?sort_list={{ sort_list }}">&laquo;</a>
+                </li>
+                {% for p in products.paginator.page_range %}
+                <li {% if products.number == p %}class="page-item disabled" {% endif %}>
+                <a class="page-link" href="{% url "shop:product_list" %}?page={{ p }}&amp;sort_list={{ sort_list }}">{{ p }}</a>
+                </li>
+                {% endfor %}
+                <li>
+            <a class="page-link" href="{% url "shop:product_list" %}?page={{ products.paginator.num_pages }}&amp;sort_list={{ sort_list }}">
+            &raquo;</a>
+            </li>
+        </ul>
+    </nav>
+{% endwith %}
+{% endif %}
+
+</div>
 {% endblock %}

@@ -6,7 +6,7 @@ from Shop.models import Product
 
 
 class Cart(object):
-    def __init__(self, request):
+    def __init__(self, request: object) -> object:
         """
         Initialize the cart.
         """

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,9 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'bootstrap4',
+    'svg',
+    'widget_tweaks',
     'Shop.apps.ShopConfig',
     'cart.apps.CartConfig',
-    'bootstrap4',
+    'orders.apps.OrdersConfig',
+    'account.apps.AccountConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -80,9 +87,13 @@ WSGI_APPLICATION = 'djangoSHOP.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'shop',
+    'USER': 'kostya_ostapenko',
+    'PASSWORD': 'ostapenko123',
+    'HOST': 'localhost',
+    'PORT': '5432',
+ }
 }
 
 
@@ -123,13 +134,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+
+
 CART_SESSION_ID = 'cart'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#Registrtion
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_URL = reverse_lazy('logout')

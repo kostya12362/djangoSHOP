@@ -1,0 +1,62 @@
+{% extends "shop/base.html" %}
+{% load widget_tweaks%}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+
+<div class="container" id="container">
+    <div class="content-form">
+		<div id="godiv" class="form-container log-in-container" >
+			<form action="{% url 'login' %}" method="post">
+				<h1>Login</h1>
+				<div class="social-container">
+					<a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
+					<a href="#" class="social"><i class="fab fa fa-twitter fa-2x"></i></a>
+                    <a href="#" class="social"><i class="fa fa-google fa-2x"></i></a>
+				</div>
+				{% render_field form.username placeholder="Username" %}
+				{% render_field form.password placeholder="Password" %}
+                {% csrf_token %}
+				<a href="{% url "password_reset" %}">Forgotten your password?</a>
+				<button type="hidden" name="next" value="{{ next }}">Log In</button>
+			</form>
+		</div>
+        <div id="showdiv" class="form-container sig-in-container" >
+            <form action="#">
+                <h1>Sign Up</h1>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
+                        <a href="#" class="social"><i class="fab fa fa-twitter fa-2x"></i></a>
+                        <a href="#" class="social"><i class="fa fa-google fa-2x"></i></a>
+                    </div>
+{#                    <span>or use your account</span>#}
+                    <input type="text" placeholder="Username" />
+                    <input type="text" placeholder="Phone" />
+                    <input type="text" placeholder="Email" />
+                    <input type="password" placeholder="Password" />
+
+                    <button>Sig Up</button>
+                </form>
+            </div>
+
+		<div class="overlay-container-sign">
+			<div class="overlay-sign">
+				<div class="overlay-panel-sign overlay-right">
+                    <button id="goSign"  value='play'>Sign up</button>
+
+				</div>
+			</div>
+		</div>
+        <div class="overlay-container-login">
+            <div class="overlay">
+                <div class="overlay-panel-login overlay-left">
+
+{#                    <p>This login form is created using pure HTML and CSS. For social icons, FontAwesome is used.</p>#}
+                    <button id="goLogin" class="sign-button " value='play'>Log In</button>
+
+                </div>
+            </div>
+        </div>
+	</div>
+    </div>
+<!--Inspiration from: http://ertekinn.com/loginsignup/-->
+{% endblock %}

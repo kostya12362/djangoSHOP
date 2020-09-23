@@ -35,3 +35,4 @@ def cart_detail(request):
                 'update': True
             })
     return render(request, 'cart/detail.html', {'cart': cart})
+
